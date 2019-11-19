@@ -7,11 +7,6 @@ import thisEasy.entity.People;
 import thisEasy.repository.PeopleRepository;
 
 @Service
-public class PeopleService extends Services <People>{
-
-	public PeopleService(PeopleRepository repository) {
-		super( repository);
+public class PeopleService extends Services<People, PeopleRepository> {
 
 }
-}
-

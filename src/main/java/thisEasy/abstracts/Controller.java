@@ -1,12 +1,11 @@
 package thisEasy.abstracts;
 
-
-import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,48 +14,37 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import thisEasy.excpetions.Err;
-import thisEasy.interfaces.Contract;
-
+import thisEasy.interfaces.ServiceContract;
 
 @RestController
-public abstract class Controller< Variable extends Contract> {
-
-protected Services<Variable> services;
+public abstract class Controller<T, S extends ServiceContract<T> > {
 
 	@Autowired
-	public Controller(Services<Variable> services) {
-		this.services = services;
+	protected S service;
+
+	@GetMapping("{id}")
+	public ResponseEntity<Optional<T>> getById(@PathVariable Long id) {
+		return ResponseEntity.ok(service.getById(id));
 	}
 
-	@GetMapping("/")
-	public Iterable<Variable> readAll() {
-		return services.readAll();
+	@GetMapping
+	public ResponseEntity<List<T>> getAll() {
+		return ResponseEntity.ok(service.getAll());
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Variable> getById(@PathVariable Long id) {
-		Variable user = services.getById(id);
-		return new ResponseEntity<Variable>(user, HttpStatus.OK);
+	@PutMapping("{id}")
+	public ResponseEntity<T> putById(@PathVariable Long id, @RequestBody T element) {
+		return ResponseEntity.ok(service.putById(id, element));
 	}
 
-	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<String> delete(@PathVariable Long id) throws Err {
-		services.delete(id);
-		return new ResponseEntity<String>("deleted successfully", HttpStatus.OK);
+	@PostMapping
+	public ResponseEntity<T> post(@RequestBody T element) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.post(element));
 	}
 
-	@PostMapping("/")
-	public ResponseEntity<Variable> create(@Valid @RequestBody Variable variable) {
-		services.create(variable);
-		return new ResponseEntity<Variable>(variable, HttpStatus.CREATED);
-	}
-
-	@PutMapping("/")
-	public ResponseEntity<Variable> update(@RequestBody Variable variable) throws Err {
-		services.update(variable);
-		return new ResponseEntity<Variable>(variable, HttpStatus.OK);
+	@DeleteMapping("{id}")
+	public ResponseEntity<String> deleteById(@PathVariable Long id) {
+		return ResponseEntity.ok("");
 	}
 
 }

@@ -1,12 +1,11 @@
 package thisEasy.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import thisEasy.entity.Ambry;
 
 @Repository
-public interface AmbryRepository extends JpaRepository<Ambry,Long> {
-	
-	
+public interface AmbryRepository extends PagingAndSortingRepository<Ambry, Long> {
+
 }

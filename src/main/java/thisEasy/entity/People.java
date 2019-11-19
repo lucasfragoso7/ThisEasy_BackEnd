@@ -2,18 +2,22 @@ package thisEasy.entity;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
-import thisEasy.interfaces.Contract;
+import lombok.Data;
+import thisEasy.interfaces.EntityContract;
 
 @Entity
+@Data
 @Table(name = "people")
-public class People implements Contract {
+public class People implements EntityContract {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -23,6 +27,8 @@ public class People implements Contract {
 	private String name;
 
 	@NotNull
+	@Email
+    @Column(unique = true)
 	private String email;
 
 	@NotNull
@@ -32,6 +38,45 @@ public class People implements Contract {
 	private Date dateOfBirth;
 
 	public Long getId() {
-		return this.id;
+		return id;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	
+
 }

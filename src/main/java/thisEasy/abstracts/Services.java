@@ -1,43 +1,45 @@
 package thisEasy.abstracts;
 
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
-import thisEasy.excpetions.Err;
-import thisEasy.interfaces.Contract;
+import thisEasy.interfaces.EntityContract;
+import thisEasy.interfaces.ServiceContract;
 
 @Service
-public abstract class Services<Variable extends  Contract> {
+public abstract class Services<T extends EntityContract,R extends PagingAndSortingRepository<T, Long>> implements ServiceContract<T>{
+	
+	@Autowired
+	protected R rep;
 
-protected CrudRepository<Variable, Long> crudRepository;
-
-	public Services(CrudRepository<Variable,Long> crudRepository) {
-		this.crudRepository = crudRepository;
+	public Optional<T> getById(Long id) {
+		return rep.findById(id);
 	}
 
-	public Variable create(Variable variable) {
-		return crudRepository.save(variable);
+	public List<T> getAll() {
+		List<T> lista = new ArrayList<T>();
+		rep.findAll().forEach(lista::add);
+		return lista;
 	}
 
-	public Variable update(Variable variable) throws Err {
-		if (!crudRepository.existsById(variable.getId()))
-			throw new Err("Não existe");
-		return crudRepository.save(variable);
+	public T putById(Long id, T element) {
+		element.setId(id);
+		return rep.save(element);
 	}
 
-	public void delete(Long id) throws Err {
-		if (!crudRepository.existsById(id)) {
-			throw new Err("Não Existe");
-		}
-		crudRepository.deleteById(id);
+	public T post(T element) {
+		return rep.save(element);
 	}
 
-	public Iterable<Variable> readAll() {
-		return crudRepository.findAll();
+	public void deleteById(Long id) {
+		rep.deleteById(id);
 	}
-
-	public Variable getById(Long id) {
-		return crudRepository.findById(id).get();
-	}
+	
+	
 }

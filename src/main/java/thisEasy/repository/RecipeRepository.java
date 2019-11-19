@@ -1,10 +1,16 @@
 package thisEasy.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import thisEasy.entity.Ingredients;
 import thisEasy.entity.Recipe;
+
 @Repository
-public interface RecipeRepository extends JpaRepository<Recipe,Long> {
+public interface RecipeRepository extends PagingAndSortingRepository<Recipe, Long> {
+
+	public List<Recipe> findAllByIngredients(List<Ingredients> ingredients);
 
 }

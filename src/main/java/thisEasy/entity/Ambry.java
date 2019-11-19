@@ -13,11 +13,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import thisEasy.interfaces.Contract;
+import lombok.Data;
+import thisEasy.interfaces.EntityContract;
 
 @Entity
+@Data
 @Table(name = "ambry")
-public class Ambry implements Contract {
+public class Ambry implements EntityContract {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -31,7 +33,30 @@ public class Ambry implements Contract {
 	private List<Ingredients> ingredients = new ArrayList<>();
 
 	public Long getId() {
-		return this.id;
+		return id;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<Ingredients> getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(List<Ingredients> ingredients) {
+		this.ingredients = ingredients;
+	}
+
+
+
 
 }
