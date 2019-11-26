@@ -13,6 +13,6 @@ public interface ServiceContract<T> {
 
 	public T post(T element);
 
-	public void deleteById(Long id);
+	public Optional<T> deleteById(Long id);
 
 }

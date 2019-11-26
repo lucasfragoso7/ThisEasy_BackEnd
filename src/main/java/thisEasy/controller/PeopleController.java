@@ -8,7 +8,7 @@ import thisEasy.entity.People;
 import thisEasy.service.PeopleService;
 
 @RestController
-@RequestMapping("/´people")
+@RequestMapping("/people")
 public class PeopleController extends Controller<People , PeopleService> {
 
 

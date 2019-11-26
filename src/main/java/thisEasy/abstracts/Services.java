@@ -37,8 +37,10 @@ public abstract class Services<T extends EntityContract,R extends PagingAndSorti
 		return rep.save(element);
 	}
 
-	public void deleteById(Long id) {
+	public Optional<T> deleteById(Long id) {
+		Optional<T> object = rep.findById(id);
 		rep.deleteById(id);
+		return object;
 	}
 	
 	
